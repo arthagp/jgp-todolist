@@ -63,35 +63,63 @@ class ListTaskController {
 
     static async updateList(req, res, next) {
         try {
-          const { id } = req.userLogged;
-          const { listId } = req.params;
-          const { title, description } = req.body;
+            const { id } = req.userLogged;
+            const { listId } = req.params;
+            const { title, description } = req.body;
 
-          const listData = await ListTask.findOne({
-            where: { id: listId, user_id: id }
-          });
-      
-          if (!listData) {
-            return res.status(400).json({ message: 'List Not Found' });
-          }
-    
-          const updatedList = await ListTask.update(
-            { title, description },
-            { where: { id: listId, user_id: id } }
-          );
-          const updatedData = await ListTask.findByPk(listId);
-      
-          res.status(200).json({
-            message: 'Berhasil update list todo',
-            updatedList : updatedData
-          });
-     
+            const listData = await ListTask.findOne({
+                where: { id: listId, user_id: id }
+            });
+
+            if (!listData) {
+                return res.status(400).json({ message: 'List Not Found' });
+            }
+
+            const updatedList = await ListTask.update(
+                { title, description },
+                { where: { id: listId, user_id: id } }
+            );
+            const updatedData = await ListTask.findByPk(listId);
+
+            res.status(200).json({
+                message: 'Berhasil update list todo',
+                updatedList: updatedData
+            });
+
         } catch (error) {
-          console.log(error);
-          next(error);
+            console.log(error);
+            next(error);
         }
-      }
-      
+    }
+
+    static async destroyList(req, res, next) {
+        try {
+            const { listId } = req.params;
+
+            const findList = await ListTask.findOne({
+                where: {
+                    id: listId
+                }
+            })
+
+            if (findList) {
+                const data = await ListTask.destroy({
+                    where: { id: listId }
+                })
+                res.status(200).json({
+                    message: 'Berhasil Terhapus'
+                })
+            }
+            res.status(400).json({
+                message: 'Something Wrong/List Not Found'
+            })
+        } catch (error) {
+            console.log(error)
+            next(error)
+        }
+
+    }
+
 }
 
 module.exports = ListTaskController;

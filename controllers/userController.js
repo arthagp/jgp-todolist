@@ -1,4 +1,4 @@
-const { User, ListTask, Task } = require('../models');
+const { User} = require('../models');
 const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
 const bcrypt = require('bcrypt')
@@ -70,7 +70,7 @@ class UserController {
               }
         } catch (error) {
             console.log(error);
-            next()
+            next(error)
         }
     }
 
@@ -97,7 +97,7 @@ class UserController {
             })
         } catch (error) {
             console.log(error)
-            next()
+            next(error)
         }
     }
 }

@@ -7,6 +7,6 @@ const task = require('./task');
 
 router.use(userRouter);
 router.use(listTaskRouter);
-// router.use(task);
+router.use(task);
 
 module.exports = router
