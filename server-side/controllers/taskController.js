@@ -88,34 +88,34 @@ class TaskController {
                     message: `Task Not Found, You Can't update Task`
                 })
             }
-            const data = await Task.update({
+            await Task.update({
                 title, description, deadline, status
-            }, { where: { listTask_id: id } })
+            }, { where: { id } })
+            const updated = await Task.findByPk(id);
+            res.status(200).json({ message: 'Berhasil Update Task', updatedList: updated });
 
-            const updated = await Task.findByPk(id)
-
-            res.status(200).json({message: 'Berhasil Update Task', updated})
         } catch (error) {
             console.log(error)
             next(error)
         }
     }
+    
 
-    static async destroyTask(req, res, next){
+    static async destroyTask(req, res, next) {
         try {
-            const {id} = req.params;
+            const { id } = req.params;
 
             const findOneTask = await Task.findOne({
-                where: {id}
+                where: { id }
             })
 
-            if(!findOneTask){
-                res.status(400).json({message: 'Task Not Found'})
+            if (!findOneTask) {
+                res.status(400).json({ message: 'Task Not Found' })
             }
             const data = await Task.destroy({
-                where: {id}
+                where: { id }
             })
-            res.status(200).json({message: 'Berhasil Hapus Task'})
+            res.status(200).json({ message: 'Berhasil Hapus Task' })
         } catch (error) {
             console.log(error);
             next(error)
