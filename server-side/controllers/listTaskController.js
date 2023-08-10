@@ -79,11 +79,11 @@ class ListTaskController {
                 { title, description },
                 { where: { id: listId, user_id: id } }
             );
-            const updatedData = await ListTask.findByPk(listId);
+            const data = await ListTask.findByPk(listId);
 
             res.status(200).json({
                 message: 'Berhasil update list todo',
-                updatedList: updatedData
+                data
             });
 
         } catch (error) {

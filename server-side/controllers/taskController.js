@@ -37,6 +37,10 @@ class TaskController {
             }
 
             const data = await Task.findAll({
+                order: [
+                    // Kolom berdasarkan yang akan diurutkan (misalnya 'title', 'deadline', 'status', dll.)
+                    ['title', 'ASC'] // Urutan menaik (ascending) berdasarkan kolom 'title'
+                ],
                 where: { listTask_id: id },
             });
             res.status(200).json({
@@ -63,7 +67,7 @@ class TaskController {
                 })
             }
             const data = await Task.create({
-                title, description, deadline, status, listTask_id: id
+                title, description, deadline, status: 'On going', listTask_id: id
             })
             res.status(201).json({
                 message: 'Berhasil Membuat Task',
@@ -91,8 +95,8 @@ class TaskController {
             await Task.update({
                 title, description, deadline, status
             }, { where: { id } })
-            const updated = await Task.findByPk(id);
-            res.status(200).json({ message: 'Berhasil Update Task', updatedList: updated });
+            const data = await Task.findByPk(id);
+            res.status(200).json({ message: 'Berhasil Update Task', data });
 
         } catch (error) {
             console.log(error)
